@@ -1,6 +1,20 @@
 ---
-Title: Home
+Title: Current projects
 ---
-Your website works!
 
-You can [edit this page] or use your text editor.
+
+
+Twenty Seventeen
+
+1. Medium Dave
+2. Feb
+3. Mar
+4. Apr
+5. May
+6. CAST: Zennor Project Space presents Beekeeping, Hypnosis and the Internet
+7. July
+8. Aug
+9. Falmouth Art Gallery: Corrupting DATA
+10. Oct
+11. Nov
+12. Dec

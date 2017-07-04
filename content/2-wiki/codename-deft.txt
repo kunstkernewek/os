@@ -1,0 +1,84 @@
+---
+Title: Codename:DEFT
+Tag: Annual, Sound
+---
+
+codename: DEFT (Late 2015)
+
+
+	/฿elieve/are you still mine.mp3
+	/฿elieve/gave you everything I have.mp3
+	/฿elieve/nevevadada.mp3
+	/฿elieve/nobody knows it but me.mp3
+	/฿elieve/owners trendy cloth.mp3
+	
+	/Able9/0001 4-Audio clappagang.mp3
+	/Able9/blingo.mp3
+	/Able9/cabbage.mp3
+	/Able9/druynth0001 5-Audio.mp3
+	/Able9/garawowoslosong.mp3
+	/Able9/notes.txt
+	/Able9/plogh-in real life.mp3
+	/Able9/plogh-missing one channel.mp3
+	/Able9/rum.mp3
+	
+	/CAustic/112BISCOSTATE6.caustic
+	/CAustic/112BISCOSTATE6.mp3
+	/CAustic/notes.txt
+	
+	/CEVS/config
+	/CEVS/samplelist.txt
+	/CEVS/samples
+	/CEVS/samples/0Clap1.wav
+	/CEVS/samples/808-BD.wav
+	/CEVS/samples/Bikebell.wav
+	/CEVS/samples/Cbasss.wav
+	/CEVS/samples/Cbk1.wav
+	/CEVS/samples/Cdang.wav
+	/CEVS/samples/Cping.wav
+	/CEVS/samples/Diddle.wav
+	/CEVS/samples/Donklic.wav
+	/CEVS/samples/Fiz.wav
+	/CEVS/samples/Fizraum.wav
+	/CEVS/samples/Htydo.wav
+	/CEVS/samples/Ilipdede.wav
+	/CEVS/samples/Ivy1.wav
+	/CEVS/samples/Jglass.wav
+	/CEVS/samples/Teep1.wav
+	/CEVS/samples/Thomastheme.wav
+	/CEVS/samples/Try.wav
+	/CEVS/samples/Ttheme.wav
+	/CEVS/samples/Tyng.wav
+	/CEVS/samples/Vip.wav
+	/CEVS/samples/Xplode.wav
+	
+	/DJ Readymade/Hemklock by DJ Readymade.mp3
+	
+	/eternally petrified unconditional love/฿elieve
+	/eternally petrified unconditional love/฿elieve/gaveyoueverythingIhave.mp3
+	/eternally petrified unconditional love/฿elieve/soslowly.mp3
+	/eternally petrified unconditional love/media-20140301.gif
+	
+	/falling/butme---this-one.mp3
+	/falling/butme-part2-not-this-one.mp3
+	
+	/maude/bow_mixdown.mp3
+	
+	/MS20/bingone 2015-01-12 20.26.00 1.mp3
+	/MS20/hhh 2015-01-12 20.40.08 1.mp3
+	/MS20/hukkf 2015-01-12 20.18.52 1.mp3
+	/MS20/karilllion belle 2014-09-08 21.42.08-1.mp3
+	/MS20/notes.txt
+	
+	/Novbury/around here23.mp3
+	/Novbury/bangles and bangles.mp3
+	/Novbury/bowserpd.mp3
+	/Novbury/fjdk.mp3
+	/Novbury/hurapilhujical.mp3
+	/Novbury/missmarpleclap2.mp3
+	/Novbury/pieeoung.mp3
+	/Novbury/pieeoungbigbeauty.mp3
+	
+	/Original finprov notes from 2007.pdf
+	
+	/tree/john.mp3
