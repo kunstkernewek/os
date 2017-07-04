@@ -4,4 +4,5 @@ Status: hidden
 published: true
 ---
 * [See all pages](/wiki/special:pages/)
+* [See recent changes](/wiki/special:changes/)
 * [wikitags /wiki/]
