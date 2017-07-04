@@ -5,7 +5,7 @@
 
 class YellowUpdate
 {
-	const VERSION = "0.7.3";
+	const VERSION = "0.7.1";
 	var $yellow;					//access to API
 	var $updates;					//number of updates
 	
@@ -28,35 +28,22 @@ class YellowUpdate
 			$update = true;
 			$fileNameConfig = $this->yellow->config->get("configDir").$this->yellow->config->get("configFile");
 			$this->yellow->config->update($fileNameConfig, array("startupUpdate" => "none"));
-			$this->yellow->config->setDefault("startupUpdate", "none");
 		}
-		if($update)
+		if($update) //TODO: remove later, converts old config
 		{
 			$fileNameConfig = $this->yellow->config->get("configDir").$this->yellow->config->get("configFile");
 			$fileData = $this->yellow->toolbox->readFile($fileNameConfig);
-			$configDefaults = new YellowDataCollection();
-			$configDefaults->exchangeArray($this->yellow->config->configDefaults->getArrayCopy());
 			foreach($this->yellow->toolbox->getTextLines($fileData) as $line)
 			{
+				$line = preg_replace("/^Webinterface/i", "Edit", $line);
 				preg_match("/^\s*(.*?)\s*:\s*(.*?)\s*$/", $line, $matches);
-				if(substru($line, 0, 12)=="Webinterface")	//TODO: remove later, converts old config
-				{
-					$line = preg_replace("/^Webinterface/i", "Edit", $line);
-					preg_match("/^\s*(.*?)\s*:\s*(.*?)\s*$/", $line, $matches);
-					if(!empty($matches[1]) && !strempty($matches[2])) $this->yellow->config->set($matches[1], $matches[2]);
-				}
-				if(!empty($matches[1]) && !is_null($configDefaults[$matches[1]])) unset($configDefaults[$matches[1]]);
+				if(substru($matches[1], 0, 4)=="Edit" && !strempty($matches[2])) $this->yellow->config->set($matches[1], $matches[2]);
 				if(!empty($matches[1]) && $matches[1][0]!='#' && is_null($this->yellow->config->configDefaults[$matches[1]]))
 				{
 					$fileDataNew .= "# $line";
 				} else {
 					$fileDataNew .= $line;
 				}
-			}
-			unset($configDefaults["configFile"]);
-			foreach($configDefaults as $key=>$value)
-			{
-				$fileDataNew .= ucfirst($key).": $value\n";
 			}
 			if($fileData!=$fileDataNew) $this->yellow->toolbox->createFile($fileNameConfig, $fileDataNew);
 		}
@@ -307,7 +294,7 @@ class YellowUpdate
 	function updateSoftware($force = false)
 	{
 		$statusCode = 200;
-		if(function_exists("opcache_reset")) opcache_reset();
+		opcache_reset();
 		$path = $this->yellow->config->get("pluginDir");
 		foreach($this->yellow->toolbox->getDirectoryEntries($path, "/^.*\.zip$/", true, false) as $entry)
 		{
@@ -373,7 +360,7 @@ class YellowUpdate
 				}
 			}
 			$zip->close();
-			if($statusCode==200) $statusCode = $this->updateSoftwareMultiLanguage($software);
+			if($statusCode==200) $statusCode = $this->updateSoftwareNew($software);
 			if($statusCode==200) $statusCode = $this->updateSoftwareNotification($software);
 			++$this->updates;
 		} else {
@@ -433,11 +420,11 @@ class YellowUpdate
 		return $statusCode;
 	}
 
-	// Update software for multiple languages
-	function updateSoftwareMultiLanguage($software)
+	// Update new software
+	function updateSoftwareNew($software)
 	{
 		$statusCode = 200;
-		if($this->yellow->config->get("multiLanguageMode") && !$this->isSoftwareExisting($software))
+		if(!$this->isSoftwareExisting($software) && $this->yellow->config->get("multiLanguageMode"))
 		{
 			$pathsSource = $pathsTarget = array();
 			$pathBase = $this->yellow->config->get("contentDir");
@@ -491,8 +478,9 @@ class YellowUpdate
 	{
 		$statusCode = 200;
 		$startupUpdate = $this->yellow->config->get("startupUpdate");
-		if($startupUpdate=="none") $startupUpdate = "YellowUpdate";
-		if($software!="YellowUpdate") $startupUpdate .= ",$software";
+		if($startupUpdate=="none") $startupUpdate = "";
+		if(!empty($startupUpdate)) $startupUpdate .= ",";
+		$startupUpdate .= $software;
 		$fileNameConfig = $this->yellow->config->get("configDir").$this->yellow->config->get("configFile");
 		if(!$this->yellow->config->update($fileNameConfig, array("startupUpdate" => $startupUpdate)))
 		{

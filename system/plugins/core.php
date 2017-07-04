@@ -470,7 +470,6 @@ class YellowPage
 			if(!$this->isExisting("titleContent")) $this->set("titleContent", $this->get("title"));
 			if(!$this->isExisting("titleNavigation")) $this->set("titleNavigation", $this->get("title"));
 			if(!$this->isExisting("titleHeader")) $this->set("titleHeader", $titleHeader);
-			if(!$this->isExisting("status") && !is_readable($this->fileName)) $this->set("status", "ignore");
 			if($this->get("status")=="hidden") $this->available = false;
 			$this->set("pageRead", $this->yellow->lookup->normaliseUrl(
 				$this->yellow->config->get("serverScheme"),
@@ -1351,15 +1350,7 @@ class YellowPages
 	function top($showInvisible = false)
 	{
 		$rootLocation = $this->getRootLocation($this->yellow->page->location);
-		$pages = new YellowPageCollection($this->yellow);
-		foreach($this->scanLocation($rootLocation) as $page)
-		{
-			if($page->isAvailable() && ($page->isVisible() || $showInvisible))
-			{
-				if(is_readable($page->fileName)) $pages->append($page);
-			}
-		}
-		return $pages;
+		return $this->getChildren($rootLocation, $showInvisible);
 	}
 	
 	// Return page collection with path ancestry
@@ -2397,7 +2388,7 @@ class YellowLookup
 	// Return file path from system location
 	function findFileFromSystem($location)
 	{
-		if(preg_match("/\.(css|gif|ico|js|jpg|png|svg|txt|woff|woff2)$/", $location))
+		if(preg_match("/\.(css|ico|js|jpg|png|svg|txt|woff|woff2)$/", $location))
 		{
 			$pluginLocationLength = strlenu($this->yellow->config->get("pluginLocation"));
 			$themeLocationLength = strlenu($this->yellow->config->get("themeLocation"));
@@ -2880,7 +2871,6 @@ class YellowToolbox
 	{
 		$mimeTypes = array(
 			"css" => "text/css",
-			"gif" => "image/gif",
 			"html" => "text/html; charset=utf-8",
 			"ico" => "image/x-icon",
 			"js" => "application/javascript",
@@ -3182,10 +3172,6 @@ class YellowToolbox
 	{
 		$dataBuffer = $salt = "";
 		$dataBufferSize = $bcryptFormat ? intval(ceil($length/4) * 3) : intval(ceil($length/2));
-		if(empty($dataBuffer) && function_exists("random_bytes"))
-		{
-			$dataBuffer = @random_bytes($dataBufferSize);
-		}
 		if(empty($dataBuffer) && function_exists("mcrypt_create_iv"))
 		{
 			$dataBuffer = @mcrypt_create_iv($dataBufferSize, MCRYPT_DEV_URANDOM);
@@ -3309,7 +3295,7 @@ class YellowToolbox
 		return $language;
 	}
 	
-	// Detect image dimensions and type for gif/jpg/png/svg
+	// Detect image dimensions and type for jpg/png/svg
 	function detectImageInfo($fileName)
 	{
 		$width = $height = 0;
@@ -3317,17 +3303,8 @@ class YellowToolbox
 		$fileHandle = @fopen($fileName, "rb");
 		if($fileHandle)
 		{
-			if(substru(strtoloweru($fileName), -3)=="gif")
+			if(substru(strtoloweru($fileName), -3)=="jpg")
 			{
-				$dataSignature = fread($fileHandle, 6);
-				$dataHeader = fread($fileHandle, 7);
-				if(!feof($fileHandle) && ($dataSignature=="GIF87a" || $dataSignature=="GIF89a"))
-				{
-					$width = (ord($dataHeader[1])<<8) + ord($dataHeader[0]);
-					$height = (ord($dataHeader[3])<<8) + ord($dataHeader[2]);
-					$type = "gif";
-				}
-			} else if(substru(strtoloweru($fileName), -3)=="jpg") {
 				$dataBufferSizeMax = filesize($fileName);
 				$dataBufferSize = min($dataBufferSizeMax, 4096);
 				if($dataBufferSize) $dataBuffer = fread($fileHandle, $dataBufferSize);

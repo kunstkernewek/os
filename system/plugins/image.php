@@ -5,7 +5,7 @@
 
 class YellowImage
 {
-	const VERSION = "0.7.2";
+	const VERSION = "0.6.8";
 	var $yellow;			//access to API
 	var $graphicsLibrary;	//graphics library support? (boolean)
 
@@ -15,8 +15,8 @@ class YellowImage
 		$this->yellow = $yellow;
 		$this->yellow->config->setDefault("imageThumbnailLocation", "/media/thumbnails/");
 		$this->yellow->config->setDefault("imageThumbnailDir", "media/thumbnails/");
-		$this->yellow->config->setDefault("imageThumbnailJpgQuality", 80);
 		$this->yellow->config->setDefault("imageAlt", "Image");
+		$this->yellow->config->setDefault("imageJpegQuality", 80);
 		$this->graphicsLibrary = $this->isGraphicsLibrary();
 	}
 
@@ -28,7 +28,7 @@ class YellowImage
 		{
 			if(!$this->graphicsLibrary)
 			{
-				$this->yellow->page->error(500, "Plugin 'image' requires GD library with gif/jpg/png support!");
+				$this->yellow->page->error(500, "Plugin 'image' requires GD library with JPG and PNG support!");
 				return $output;
 			}
 			list($name, $alt, $style, $width, $height) = $this->yellow->toolbox->getTextArgs($text);
@@ -119,24 +119,10 @@ class YellowImage
 		$image = false;
 		switch($type)
 		{
-			case "gif":	$image = @imagecreatefromgif($fileName); break;
 			case "jpg":	$image = @imagecreatefromjpeg($fileName); break;
 			case "png":	$image = @imagecreatefrompng($fileName); break;
 		}
 		return $image;
-	}
-	
-	// Save image to file
-	function saveImage($image, $fileName, $type)
-	{
-		$ok = false;
-		switch($type)
-		{
-			case "gif":	$ok = @imagegif($image, $fileName); break;
-			case "jpg":	$ok = @imagejpeg($image, $fileName, $this->yellow->config->get("imageThumbnailJpgQuality")); break;
-			case "png":	$ok = @imagepng($image, $fileName); break;
-		}
-		return $ok;
 	}
 
 	// Create image from scratch
@@ -164,6 +150,18 @@ class YellowImage
 		}
 		return $imageOutput;
 	}
+
+	// Save image to file
+	function saveImage($image, $fileName, $type)
+	{
+		$ok = false;
+		switch($type)
+		{
+			case "jpg":	$ok = @imagejpeg($image, $fileName, $this->yellow->config->get("imageJpegQuality")); break;
+			case "png":	$ok = @imagepng($image, $fileName); break;
+		}
+		return $ok;
+	}
 	
 	// Return value according to unit
 	function convertValueAndUnit($text, $valueBase)
@@ -188,7 +186,7 @@ class YellowImage
 	function isGraphicsLibrary()
 	{
 		return extension_loaded("gd") && function_exists("gd_info") &&
-			((imagetypes()&(IMG_GIF|IMG_JPG|IMG_PNG))==(IMG_GIF|IMG_JPG|IMG_PNG));
+			((imagetypes()&(IMG_JPG|IMG_PNG))==(IMG_JPG|IMG_PNG));
 	}
 }
 
